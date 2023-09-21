@@ -11,6 +11,11 @@ public enum UserType {
         this.statusName = statusName;
     }
 
+    /**
+     * Используется для получения {@link UserType} по {@link #permissionsId}
+     * @param id идентификатор правового статуса
+     * @return {@link UserType}, который имеет указанный в аргументах идентификатор правового статуса
+     */
     public static UserType getUserTypeById(int id) {
         switch (id) {
             case 1:

@@ -3,10 +3,13 @@ plugins {
     id 'application'
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
+compileJava.options.encoding = 'UTF-8' // устанавливает кодировку для компилируемого кода
+javadoc.options.encoding = 'UTF-8' // устанавливает кодировку для генерируемой документации
+compileTestJava.options.encoding = 'UTF-8'
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 mainClassName = 'ru.projectraid.Main';
 

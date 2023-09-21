@@ -23,6 +23,11 @@ public class Bot extends LongPollBot {
         getInstance = this;
     }
 
+    /**
+     * Позволяет отправить текстовое сообщение в ЛС пользователю от имени группы
+     * @param user пользователь, которому мы отправляем
+     * @param text текст, который мы отправляем
+     */
     public void sendMsgToUser(User user, String text) {
         try {
             vk.messages.send()
@@ -34,6 +39,12 @@ public class Bot extends LongPollBot {
         }
     }
 
+    /**
+     * Ивент, который срабатывает при получении сообщения от пользователя
+     * Сначала мы добавляем пользователя в массив сохранённых пользователей(если он уже есть там, то данное действие игнорируется),
+     * а после мы получаем данного пользователя и обрабатываем сообщение через {@link MessageHandler}.
+     * @param messageNew event object.
+     */
     @Override
     public void onMessageNew(MessageNew messageNew) {
         Message message = messageNew.getMessage();
@@ -44,9 +55,9 @@ public class Bot extends LongPollBot {
 
             try {
                 if(MessageHandler.useCommand(user, message.getText()))
-                    System.out.println(user.getUniqueId() + " used command " + message.getText());
+                    System.out.println(user.getUniqueId() + " использовал команду " + message.getText());
                 else
-                    sendMsgToUser(user, "Incorrect command");
+                    sendMsgToUser(user, "Данной команды нет в списке!");
             } catch (IllegalAccess e)
             {
                 sendMsgToUser(user, e.getMessage());
