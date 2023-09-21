@@ -21,7 +21,7 @@ public class MessageHandler {
     public static void addCommand(ACommand command) {
         if(existCommand(command.getCommandName()))
             return;
-        System.out.println("Комманда \"" + command.getCommandName() + "\" была добавлена в список.");
+        System.out.println("Команда \"" + command.getCommandName() + "\" была добавлена в список.");
         commands.add(command);
     }
 

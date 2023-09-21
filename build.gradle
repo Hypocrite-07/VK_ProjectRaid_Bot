@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 compileJava.options.encoding = 'UTF-8' // устанавливает кодировку для компилируемого кода
@@ -8,6 +9,9 @@ javadoc.options.encoding = 'UTF-8' // устанавливает кодиров�
 compileTestJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
     options.encoding = 'UTF-8'
 }
 
@@ -19,6 +23,14 @@ jar {
     }
 }
 
+build {
+    shadowJar {
+        dependencies {
+            exclude 'com.github.yvasyliev:java-vk-bots-longpoll-api:4.1.7'
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -26,3 +38,8 @@ repositories {
 dependencies {
     implementation 'com.github.yvasyliev:java-vk-bots-longpoll-api:4.1.7'
 }
+
+
+
+
+
