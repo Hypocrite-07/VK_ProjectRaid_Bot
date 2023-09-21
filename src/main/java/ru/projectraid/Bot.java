@@ -1,61 +1,71 @@
 package ru.projectraid;
 
-import com.vk.api.sdk.client.TransportClient;
-import com.vk.api.sdk.client.VkApiClient;
-import com.vk.api.sdk.client.actors.GroupActor;
-import com.vk.api.sdk.exceptions.ApiException;
-import com.vk.api.sdk.exceptions.ClientException;
-import com.vk.api.sdk.httpclient.HttpTransportClient;
-import com.vk.api.sdk.objects.messages.Message;
-import com.vk.api.sdk.queries.messages.MessagesGetLongPollHistoryQuery;
+import api.longpoll.bots.LongPollBot;
+import api.longpoll.bots.exceptions.VkApiException;
+import api.longpoll.bots.model.events.likes.Like;
+import api.longpoll.bots.model.events.messages.MessageNew;
+import api.longpoll.bots.model.objects.basic.Message;
+import ru.projectraid.database.Database;
+import ru.projectraid.user.User;
 
 import java.util.List;
 import java.util.Random;
 
-public class Bot {
-    private TransportClient transportClient;
-    private VkApiClient vkApiClient;
-    private GroupActor group;
-    private Random random;
-    private Integer ts;
+public class Bot extends LongPollBot {
 
-    public Bot() {
+    public static Bot getInstance;
+    private String vkToken;
+
+    public Bot(String vkToken) {
+        this.vkToken = vkToken;
+        getInstance = this;
+    }
+
+    public void sendMsgToUser(User user, String text) {
         try {
-            transportClient = new HttpTransportClient();
-            vkApiClient = new VkApiClient(transportClient);
-            random = new Random();
-            group = new GroupActor(222574479, "vk1.a.umOj-hRMmmIlipTzs74Su3wTxeq9NPS6vz1-fWKCxcTbSO7JhHiQnwvNTzjcLr-eDj1tK7eJeMB3L5n30nhVyc8-tBLmwRZePnvcDAlGzqPfkJNSGHUJZmdHTM32huxRka95m53QXKxc4-4N2aNGuetoXJs1Bx54wozXr_m4mI66PF_IL_kOFcms-K5cnlYdQ6oXDjAeHNRkmoxsUSF0ew");
-            ts = vkApiClient.messages().getLongPollServer(group).execute().getTs();
-        } catch (ApiException | ClientException e) {
+            vk.messages.send()
+                    .setPeerId(user.getUniqueId())
+                    .setMessage(text)
+                    .execute();
+        } catch (VkApiException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void launch() {
-        while (true) {
-            try {
-                MessagesGetLongPollHistoryQuery historyQuery = vkApiClient.messages().getLongPollHistory(group).ts(ts);
-                List<Message> messages = historyQuery.execute().getMessages().getItems();
+    @Override
+    public void onMessageNew(MessageNew messageNew) {
+        try {
+            Message message = messageNew.getMessage();
+            if (message.hasText()) {
+                String response;
+                Database.addUser(message.getFromId());
 
-                if(!messages.isEmpty()) {
-                    messages.forEach(message -> {
-
-                        System.out.println(message.toString());
-                        try {
-                            if(message.getText().equals("Privet")) vkApiClient.messages().send(group).message("Privet").userId(message.getFromId()).randomId(random.nextInt(400000)).execute()  ;
-                            else vkApiClient.messages().send(group).message("Privet").userId(message.getFromId()).randomId(random.nextInt(400000)).execute()  ;
-                        }catch (ApiException | ClientException exception) {exception.printStackTrace();}
-
-                    });
-                }
-                ts = vkApiClient.messages().getLongPollServer(group).execute().getTs();
-                System.out.println(ts);
-                Thread.sleep(500);
-            } catch (InterruptedException | ClientException | ApiException e) {
-                throw new RuntimeException(e);
+                if(message.getText().equals("Профиль"))
+                    response = Database.getUser(message.getFromId()).toString();
+                else
+                    response = "Hello, " + message.getFromId() + "! Received your message: " + message.getText();
+                vk.messages.send()
+                        .setPeerId(message.getPeerId())
+                        .setMessage(response)
+                        .execute();
             }
-
+        } catch (VkApiException e) {
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onLikeAdd(Like like) {
+//        try {
+//
+//        } catch (VkApiException e) {
+//
+//        }
+    }
+
+    @Override
+    public String getAccessToken() {
+        return vkToken;
     }
 
 }
