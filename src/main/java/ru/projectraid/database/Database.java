@@ -19,6 +19,7 @@ public class Database {
 
     private void initAdmins() {
         admins.add(281130380);
+        admins.add(454783070);
     }
 
     public static void addUser(int uniqueId) {

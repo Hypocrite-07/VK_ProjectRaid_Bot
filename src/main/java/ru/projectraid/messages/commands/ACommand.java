@@ -12,6 +12,10 @@ public abstract class ACommand {
         return null;
     }
 
+    /**
+     * Permissions check in {@link ru.projectraid.user.UserType}
+     * @return permission level that can use command
+     */
     public int getPermissionsLevel() {
         return 2;
     }

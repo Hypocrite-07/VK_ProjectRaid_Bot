@@ -6,6 +6,8 @@ import api.longpoll.bots.model.events.likes.Like;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.database.Database;
+import ru.projectraid.exceptions.IllegalAccess;
+import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.user.User;
 
 import java.util.List;
@@ -34,23 +36,21 @@ public class Bot extends LongPollBot {
 
     @Override
     public void onMessageNew(MessageNew messageNew) {
-        try {
-            Message message = messageNew.getMessage();
-            if (message.hasText()) {
-                String response;
-                Database.addUser(message.getFromId());
+        Message message = messageNew.getMessage();
+        if (message.hasText()) {
+            String response;
+            Database.addUser(message.getFromId());
+            User user = Database.getUser(message.getFromId());
 
-                if(message.getText().equals("Профиль"))
-                    response = Database.getUser(message.getFromId()).toString();
+            try {
+                if(MessageHandler.useCommand(user, message.getText()))
+                    System.out.println(user.getUniqueId() + " used command " + message.getText());
                 else
-                    response = "Hello, " + message.getFromId() + "! Received your message: " + message.getText();
-                vk.messages.send()
-                        .setPeerId(message.getPeerId())
-                        .setMessage(response)
-                        .execute();
+                    sendMsgToUser(user, "Incorrect command");
+            } catch (IllegalAccess e)
+            {
+                sendMsgToUser(user, e.getMessage());
             }
-        } catch (VkApiException e) {
-            e.printStackTrace();
         }
     }
 

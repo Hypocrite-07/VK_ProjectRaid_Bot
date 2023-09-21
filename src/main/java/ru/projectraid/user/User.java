@@ -5,7 +5,7 @@ import ru.projectraid.market.Shop;
 import ru.projectraid.market.wallet.Wallet;
 import ru.projectraid.messages.commands.ACommand;
 
-public class User<T> {
+public class User {
     private final int uniqueId;
     private final Wallet wallet;
     private UserType userType;
@@ -20,22 +20,8 @@ public class User<T> {
         return uniqueId;
     }
 
-    public boolean canBuy(Product product) {
-        return this.wallet.getActivities() >= product.price;
-    }
-
-    public <T extends ACommand> boolean canUseCommand(T command) {
+    public boolean canUseCommand(ACommand command) {
         return this.userType.permissionsId >= command.getPermissionsLevel();
-    }
-
-    public <T extends ACommand> void useCommand(T command) {
-        if(canUseCommand(command))
-            command.action(this);
-    }
-
-    public void toBuy(Shop shop, Product product) {
-        if(canBuy(product))
-            wallet.buyProduct(product);
     }
 
     @Override

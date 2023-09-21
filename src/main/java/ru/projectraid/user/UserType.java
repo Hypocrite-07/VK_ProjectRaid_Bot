@@ -10,4 +10,15 @@ public enum UserType {
         this.permissionsId = statusId;
         this.statusName = statusName;
     }
+
+    public static UserType getUserTypeById(int id) {
+        switch (id) {
+            case 1:
+                return UserType.AUTHORIZED;
+            case 2:
+                return UserType.ADMIN;
+            default:
+                return UserType.GUEST;
+        }
+    }
 }
