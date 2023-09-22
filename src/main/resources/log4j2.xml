@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <!-- Logging Properties -->
+    <Properties>
+        <Property name="BASE_PATH">logs</Property>
+    </Properties>
+
+    <Appenders>
+
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout>
+                <disableAnsi>false</disableAnsi>
+                <pattern>%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n}{TRACE=magenta,
+                    DEBUG=bright_blue, WARN=yellow, ERROR=bright_red}
+                </pattern>
+            </PatternLayout>
+        </Console>
+
+        <RollingFile name="FileLogger"
+                     fileName="${BASE_PATH}/app-${date:dd-MM-yyyy_HH-mm-ss}.log"
+                     filePattern="${BASE_PATH}/app-%d{yyyy-MM-dd_HH-mm-ss}.log"
+                     append="false">
+            <PatternLayout>
+                <disableAnsi>true</disableAnsi>
+                <pattern>%highlight{[%-5level] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%t] %c{1} - %msg%n}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <!--
+        <Logger name="ru.hypocrite.messenger" level="trace" additivity="false">
+            <appender-ref ref="FileLogger"/>
+        </Logger>
+
+        <Logger name="ru.hypocrite.messenger" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+<Logger name="ru.hypocrite.messenger" level="trace" additivity="false">
+            <appender-ref ref="FileLogger"/>
+        </Logger>
+
+        <Logger name="ru.hypocrite.messenger" level="TRACE" additivity="false">
+            <AppenderRef ref="FileLogger"/>
+        </Logger>
+-->
+        <Root level="DEBUG">
+            <AppenderRef ref="FileLogger"/>
+            <AppenderRef ref="Console"/>
+        </Root>
+
+
+    </Loggers>
+
+</Configuration>
+

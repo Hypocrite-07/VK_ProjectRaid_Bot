@@ -5,23 +5,28 @@ import api.longpoll.bots.exceptions.VkApiException;
 import api.longpoll.bots.model.events.likes.Like;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
+
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IllegalAccess;
 import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.user.User;
 
-import java.util.List;
-import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class Bot extends LongPollBot {
 
+    public static final Logger logger = Logger.getLogger(Bot.class.getName());
+
     public static Bot getInstance;
-    private String vkToken;
+    private final String vkToken;
 
     public Bot(String vkToken) {
         this.vkToken = vkToken;
         getInstance = this;
+        logger.log(Level.INFO, "Бот был проинициализирован");
     }
 
     /**
@@ -50,7 +55,6 @@ public class Bot extends LongPollBot {
     public void onMessageNew(MessageNew messageNew) {
         Message message = messageNew.getMessage();
         if (message.hasText()) {
-            String response;
             Database.addUser(message.getFromId());
             User user = Database.getUser(message.getFromId());
 

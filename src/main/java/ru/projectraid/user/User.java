@@ -1,13 +1,12 @@
 package ru.projectraid.user;
 
-import ru.projectraid.market.Product;
-import ru.projectraid.market.Shop;
 import ru.projectraid.market.wallet.Wallet;
 import ru.projectraid.messages.commands.ACommand;
 
 public class User {
     private final int uniqueId;
     private final Wallet wallet;
+
     private UserType userType;
 
     /**
