@@ -6,6 +6,7 @@ import ru.projectraid.database.Database;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.messages.commands.Help;
 import ru.projectraid.messages.commands.Profile;
+import ru.projectraid.messages.commands.Test;
 
 public class Main {
     public static void main ( String[] args ) {
@@ -27,5 +28,6 @@ public class Main {
     private static void initCommands() {
         MessageHandler.addCommand(new Profile());
         MessageHandler.addCommand(new Help());
+        MessageHandler.addCommand(new Test());
     }
 }

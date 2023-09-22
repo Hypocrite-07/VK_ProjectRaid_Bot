@@ -7,6 +7,7 @@ import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IllegalAccess;
+import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.user.User;
 
@@ -54,11 +55,9 @@ public class Bot extends LongPollBot {
             User user = Database.getUser(message.getFromId());
 
             try {
-                if(MessageHandler.useCommand(user, message.getText()))
-                    System.out.println(user.getUniqueId() + " использовал команду " + message.getText());
-                else
-                    sendMsgToUser(user, "Данной команды нет в списке!");
-            } catch (IllegalAccess e)
+                if(MessageHandler.useCommand(user, message.getText())) {}
+                else sendMsgToUser(user, "Данной команды нет в списке!");
+            } catch (IllegalAccess | IncorrectArgument e)
             {
                 sendMsgToUser(user, e.getMessage());
             }

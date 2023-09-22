@@ -1,6 +1,7 @@
 package ru.projectraid.messages;
 
 import ru.projectraid.exceptions.IllegalAccess;
+import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.messages.commands.ACommand;
 import ru.projectraid.user.User;
 import ru.projectraid.user.UserType;
@@ -32,13 +33,14 @@ public class MessageHandler {
      * @return успешное использование команды
      * @throws IllegalAccess выкидывает исключение при условии того, что у {@link User} {@code StatusID} в {@link UserType} меньше, чем необходимо для использования команды
      */
-    public static boolean useCommand(User user, String commandName) throws IllegalAccess {
-        if(existCommand(commandName))
+    public static boolean useCommand(User user, String commandName) throws IllegalAccess, IncorrectArgument {
+        String[] args = commandName.split(" ");
+        if(existCommand(args[0]))
         {
-            ACommand command = getCommand(commandName);
+            ACommand command = getCommand(args[0]);
             if(user.canUseCommand(command))
             {
-                command.action(user);
+                command.action(user, args);
                 return true;
             }
             else

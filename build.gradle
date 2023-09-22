@@ -4,6 +4,8 @@ plugins {
     id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
+
+
 compileJava.options.encoding = 'UTF-8' // устанавливает кодировку для компилируемого кода
 javadoc.options.encoding = 'UTF-8' // устанавливает кодировку для генерируемой документации
 compileTestJava.options.encoding = 'UTF-8'
@@ -13,18 +15,44 @@ tasks.withType(JavaCompile) {
     targetCompatibility = '1.8'
 
     options.encoding = 'UTF-8'
+
 }
 
 mainClassName = 'ru.projectraid.Main';
+version = project.findProperty('version') ?: '1.0'
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'ru.projectraid.Main'
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
     }
 }
 
+
+tasks.register('sourceJar', Jar) {
+    group "ApplicationBuild"
+    from sourceSets.main.allSource
+    setArchiveBaseName(project.name)
+    setArchiveClassifier("sources")
+    destinationDirectory = file('build/libs')
+}
+
+jar {
+    group "ApplicationBuild"
+    setArchiveBaseName(project.name)
+    setArchiveClassifier("bin")
+    //setEnabled(false)
+    dependsOn(sourceJar)
+}
+
+
+
 build {
+    group "ApplicationBuild"
     shadowJar {
+        setArchiveBaseName(project.name)
+        setArchiveClassifier("all")
         dependencies {
             exclude 'com.github.yvasyliev:java-vk-bots-longpoll-api:4.1.7'
         }
@@ -38,8 +66,4 @@ repositories {
 dependencies {
     implementation 'com.github.yvasyliev:java-vk-bots-longpoll-api:4.1.7'
 }
-
-
-
-
 

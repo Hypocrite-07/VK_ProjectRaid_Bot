@@ -1,5 +1,6 @@
 package ru.projectraid.messages.commands;
 
+import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.user.User;
 
 public abstract class ACommand {
@@ -31,7 +32,7 @@ public abstract class ACommand {
      * Данный метод используется для реализации действия команды
      * @param user игрок, который вызвал команду
      */
-    public void action(User user) {
+    public void action(User user, String... args) throws IncorrectArgument {
 
     }
 }

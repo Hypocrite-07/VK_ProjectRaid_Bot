@@ -3,11 +3,11 @@ package ru.projectraid.messages.commands;
 import ru.projectraid.Bot;
 import ru.projectraid.user.User;
 
-public class Profile extends ACommand {
+public class Test extends ACommand {
 
     @Override
     public String getCommandName() {
-        return "Профиль";
+        return "test";
     }
 
     @Override
@@ -22,6 +22,9 @@ public class Profile extends ACommand {
 
     @Override
     public void action(User user, String... args) {
-        Bot.getInstance.sendMsgToUser(user, user.toString());
+        if(args.length > 1)
+            Bot.getInstance.sendMsgToUser(user, "test: " + args[1]);
+        else
+            Bot.getInstance.sendMsgToUser(user, "test: empty");
     }
 }
