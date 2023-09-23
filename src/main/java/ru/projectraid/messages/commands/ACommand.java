@@ -1,5 +1,6 @@
 package ru.projectraid.messages.commands;
 
+import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.user.User;
 
@@ -31,8 +32,10 @@ public abstract class ACommand {
     /**
      * Данный метод используется для реализации действия команды
      * @param user игрок, который вызвал команду
+     * @param message само сообщение из ВК с хранимыми внутри данными
+     * @param args массив слов из сообщения, args[0] это сам commandName, а остальное аргументы
      */
-    public void action(User user, String... args) throws IncorrectArgument {
+    public void action( User user, Message message, String... args) throws IncorrectArgument {
 
     }
 }

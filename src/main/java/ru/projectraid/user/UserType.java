@@ -1,7 +1,11 @@
 package ru.projectraid.user;
 
 public enum UserType {
-    GUEST(0, "Гость"), AUTHORIZED(1, "Игрок"), ADMIN(2, "Администратор"), DEVELOPER(3, "Разработчик");
+
+    GUEST(0, "Гость"),
+    AUTHORIZED(1, "Игрок"),
+    ADMIN(2, "Администратор"),
+    DEVELOPER(3, "Разработчик");
 
     public final String statusName;
     public final int permissionsId;

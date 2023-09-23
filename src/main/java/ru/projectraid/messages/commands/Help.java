@@ -1,5 +1,6 @@
 package ru.projectraid.messages.commands;
 
+import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.Bot;
 import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.messages.MessageHandler;
@@ -23,7 +24,7 @@ public class Help extends ACommand{
     }
 
     @Override
-    public void action (User user, String... args) throws IncorrectArgument {
+    public void action ( User user, Message message, String... args) throws IncorrectArgument {
         if(args.length > 1)
             throw new IncorrectArgument(getCommandName(), "был найден лишний аргумент!");
         StringBuilder commandslist = new StringBuilder("В данный момент вы можете использовать следующие команды: \n\n");

@@ -59,7 +59,7 @@ public class Bot extends LongPollBot {
             User user = Database.getUser(message.getFromId());
 
             try {
-                if(MessageHandler.useCommand(user, message.getText())) {}
+                if(MessageHandler.useCommand(user, message)) {}
                 else sendMsgToUser(user, "Данной команды нет в списке!");
             } catch (IllegalAccess | IncorrectArgument e)
             {

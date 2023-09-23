@@ -1,7 +1,10 @@
 package ru.projectraid.messages.commands;
 
+import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.Bot;
 import ru.projectraid.user.User;
+
+import java.lang.reflect.Member;
 
 public class Profile extends ACommand {
 
@@ -21,7 +24,7 @@ public class Profile extends ACommand {
     }
 
     @Override
-    public void action(User user, String... args) {
+    public void action( User user, Message message, String... args) {
         Bot.getInstance.sendMsgToUser(user, user.toString());
     }
 }

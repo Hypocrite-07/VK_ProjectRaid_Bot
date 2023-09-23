@@ -1,5 +1,6 @@
 package ru.projectraid.messages;
 
+import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.exceptions.IllegalAccess;
 import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.messages.commands.ACommand;
@@ -20,29 +21,28 @@ public class MessageHandler {
      * @param command команда, которую мы хотим добавить
      */
     public static void addCommand(ACommand command) {
-        if(existCommand(command.getCommandName()))
-            return;
+        if(existCommand(command.getCommandName())) return;
         System.out.println("Команда \"" + command.getCommandName() + "\" была добавлена в список.");
         commands.add(command);
     }
 
     /**
      * Данный метод позволяет нам использовать действие команды, когда её вызвал игрок.
-     * @param user игрок вызвавший команду
-     * @param userInput ввод игрока, который разбивается на элементы по ключевому символу {@code " "}, т.е. символу пробела
+     * @param user пользователь вызвавший команду
+     * @param message сообщение, которое отправил пользователь
      * @return успешное использование команды
      * @throws IllegalAccess выкидывает исключение при условии того, что у {@link User} {@code StatusID} в {@link UserType} меньше, чем необходимо для использования команды
      * @throws IncorrectArgument выкидывает исключение при условии того, что у вызванной команды была некорректно пройдена проверка на аргументы
      */
-    public static boolean useCommand(User user, String userInput) throws IllegalAccess, IncorrectArgument {
-        String[] args = userInput.split(" ");
+    public static boolean useCommand( User user, Message message) throws IllegalAccess, IncorrectArgument {
+        String[] args = message.getText().split(" ");
         if(existCommand(args[0]))
         {
             ACommand command = getCommand(args[0]);
             assert command != null;
             if(user.canUseCommand(command))
             {
-                command.action(user, args);
+                command.action(user, message, args);
                 return true;
             }
             else
