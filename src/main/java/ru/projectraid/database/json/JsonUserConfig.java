@@ -7,7 +7,9 @@ import ru.projectraid.database.json.serialization.UserTypeSerializer;
 import ru.projectraid.user.UserType;
 
 public class JsonUserConfig {
-    public static final Gson gson = new Gson();
+    public static final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
     public static String userDatabaseFilepath = "database/UsersDB.json";
     public static Gson jsonUserBuilder = new GsonBuilder()
             .registerTypeAdapter(UserType.class, new UserTypeSerializer())
