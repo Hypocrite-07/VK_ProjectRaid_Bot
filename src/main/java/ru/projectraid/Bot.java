@@ -2,16 +2,24 @@ package ru.projectraid;
 
 import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
+import api.longpoll.bots.model.events.Update;
+import api.longpoll.bots.model.events.boards.BoardPost;
 import api.longpoll.bots.model.events.likes.Like;
 import api.longpoll.bots.model.events.messages.MessageNew;
+import api.longpoll.bots.model.events.photos.PhotoComment;
+import api.longpoll.bots.model.events.wall.comments.WallReply;
+import api.longpoll.bots.model.events.wall.comments.WallReplyDelete;
 import api.longpoll.bots.model.objects.basic.Message;
 
+import api.longpoll.bots.model.objects.basic.WallPost;
+import ru.projectraid.activitysShop.ActivityTable;
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IllegalAccess;
 import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.user.User;
 
+import javax.xml.crypto.Data;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,9 +27,9 @@ import java.util.logging.Logger;
 public class Bot extends LongPollBot {
 
     public static final Logger logger = Logger.getLogger(Bot.class.getName());
-
     public static Bot getInstance;
     private final String vkToken;
+    private final int groupId = -222574479;
 
     public Bot(String vkToken) {
         this.vkToken = vkToken;
@@ -55,7 +63,6 @@ public class Bot extends LongPollBot {
     public void onMessageNew(MessageNew messageNew) {
         Message message = messageNew.getMessage();
         if (message.hasText()) {
-            Database.addUser(message.getFromId());
             User user = Database.getUser(message.getFromId());
 
             try {
@@ -70,11 +77,38 @@ public class Bot extends LongPollBot {
 
     @Override
     public void onLikeAdd(Like like) {
-//        try {
-//
-//        } catch (VkApiException e) {
-//
-//        }
+        logger.log(Level.INFO, like.toString());
+        User user = Database.getUser(like.getLikerId());
+        if(like.getObjectOwnerId() == groupId) user.addActivities(ActivityTable.LIKE_EVENT.activitiesCount, ActivityTable.LIKE_EVENT, like);
+    }
+
+    @Override
+    public void onLikeRemove(Like like) {
+        User user = Database.getUser(like.getLikerId());
+        if(like.getObjectOwnerId() == groupId) user.addActivities(-ActivityTable.LIKE_EVENT.activitiesCount, ActivityTable.LIKE_EVENT, like);
+    }
+
+    @Override
+    public void onWallReplyNew(WallReply wallReply) {
+        logger.log(Level.INFO, wallReply.toString());
+        User user = Database.getUser(wallReply.getFromId());
+        int postId = wallReply.getPostId();
+        if(!user.isReplyPost(postId)) {
+            user.addReply(postId);
+            user.addActivities(ActivityTable.COMMENT_EVENT.activitiesCount, ActivityTable.COMMENT_EVENT, wallReply);
+        }
+    }
+
+    @Override
+    public void onWallReplyDelete(WallReplyDelete wallReplyDelete) {
+        User user = Database.getUser(wallReplyDelete.getDeleterId());
+        user.removeReplay(wallReplyDelete.getPostId());
+        user.addActivities(-ActivityTable.COMMENT_EVENT.activitiesCount, ActivityTable.COMMENT_EVENT, wallReplyDelete);
+    }
+
+    @Override
+    public void onWallReplyRestore(WallReply wallReply) {
+        onWallReplyNew(wallReply);
     }
 
     @Override

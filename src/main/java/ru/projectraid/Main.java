@@ -1,7 +1,6 @@
 package ru.projectraid;
 
 import api.longpoll.bots.exceptions.VkApiException;
-import ru.projectraid.market.Shop;
 import ru.projectraid.database.Database;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.messages.commands.Help;
@@ -11,7 +10,6 @@ import ru.projectraid.messages.commands.Test;
 public class Main {
     public static void main ( String[] args ) {
         Database db = new Database();
-        Shop shop = new Shop();
         initCommands();
 
 

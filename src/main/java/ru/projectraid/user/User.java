@@ -1,12 +1,26 @@
 package ru.projectraid.user;
 
-import ru.projectraid.market.wallet.Wallet;
+import api.longpoll.bots.model.events.Update;
+import ru.projectraid.Bot;
+import ru.projectraid.activitysShop.ActivityTable;
 import ru.projectraid.messages.commands.ACommand;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User {
     private final int uniqueId;
-    private final Wallet wallet;
+    private ArrayList<Integer> replyPost;
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    private int activities;
     private UserType userType;
 
     /**
@@ -16,8 +30,8 @@ public class User {
      */
     public User(int uniqueId, UserType userType) {
         this.uniqueId = uniqueId;
-        this.wallet = new Wallet();
         this.userType = userType;
+        this.replyPost = new ArrayList();
     }
 
     /**
@@ -37,12 +51,35 @@ public class User {
         return this.userType.permissionsId >= command.getPermissionsLevel();
     }
 
+    public int getActivities() {
+        return activities;
+    }
+    public void addActivities(int activities, ActivityTable activityType, Update.Object _object) {
+        this.activities += activities;
+        if(activities > 0)
+            Bot.getInstance.sendMsgToUser(this, "На ваш счёт зачислен " + activityType.activitiesCount + "\nТекущий счёт:" + getActivities() + "\n" + _object.toString());
+        else
+            Bot.getInstance.sendMsgToUser(this, "С вашего счёта вычеслено " + activityType.activitiesCount + "\nТекущий счёт:" + getActivities() + "\n" + _object.toString());
+
+    }
+
+    public void addReply(int postId) {
+        replyPost.add(postId);
+    }
+
+    public void removeReplay(int postId) {
+        replyPost.remove((Object) postId);
+    }
+    public boolean isReplyPost(int postId) {
+        return replyPost.contains(postId);
+    }
+
     @Override
     public String toString() {
         return "Профиль" +
                 "\nИдентификатор: " + uniqueId +
                 "\nСтатус: " + userType.statusName +
-                "\nБаланс: " + wallet.getActivities();
+                "\nБаллы: " + activities;
     }
 
 }

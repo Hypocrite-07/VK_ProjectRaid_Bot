@@ -46,7 +46,13 @@ public class Database {
      * @return возвращает пользователя из ключевого массива {@link #users}
      */
     public static User getUser(int uniqueId) {
-        return users.get(uniqueId);
+        User user = users.get(uniqueId);
+        if(users.get(uniqueId) == null)
+        {
+            addUser(uniqueId);
+            return getUser(uniqueId);
+        }
+        return user;
     }
 
     /**

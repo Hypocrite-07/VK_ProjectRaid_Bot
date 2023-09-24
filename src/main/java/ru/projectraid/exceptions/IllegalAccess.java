@@ -16,4 +16,5 @@ public class IllegalAccess extends Throwable {
     public String getMessage () {
         return super.getMessage();
     }
+
 }
