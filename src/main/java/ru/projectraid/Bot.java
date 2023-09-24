@@ -2,16 +2,12 @@ package ru.projectraid;
 
 import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
-import api.longpoll.bots.model.events.Update;
-import api.longpoll.bots.model.events.boards.BoardPost;
 import api.longpoll.bots.model.events.likes.Like;
 import api.longpoll.bots.model.events.messages.MessageNew;
-import api.longpoll.bots.model.events.photos.PhotoComment;
 import api.longpoll.bots.model.events.wall.comments.WallReply;
 import api.longpoll.bots.model.events.wall.comments.WallReplyDelete;
 import api.longpoll.bots.model.objects.basic.Message;
 
-import api.longpoll.bots.model.objects.basic.WallPost;
 import ru.projectraid.activitysShop.ActivityTable;
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IllegalAccess;
@@ -19,10 +15,8 @@ import ru.projectraid.exceptions.IncorrectArgument;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.user.User;
 
-import javax.xml.crypto.Data;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 public class Bot extends LongPollBot {
 

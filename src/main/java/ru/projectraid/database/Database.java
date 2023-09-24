@@ -1,27 +1,86 @@
 package ru.projectraid.database;
 
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import ru.projectraid.database.json.JsonUserConfig;
 import ru.projectraid.user.User;
 import ru.projectraid.user.UserType;
 
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Database {
 
-    private static HashMap<Integer, User> users;
-    private static ArrayList<Integer> developers;
+    public static HashMap<Integer, User> users = new HashMap<>();
+    private static ArrayList<Integer> developers = new ArrayList<>();
+
+    /**
+     * Конструктор, инициализуирует всех администраторов
+     */
     public Database() {
-        users = new HashMap<>();
-        developers = new ArrayList<>();
         initDevelopers();
+    }
+
+    /**
+      * Помогает считывать информацию с JSON файла. Парсит данные и заменяет их, как только программа была открыта.
+     */
+    public static void loadUsersFromJsonFile(){
+        try (FileReader fileReader = new FileReader(JsonUserConfig.userDatabaseFilepath)) {
+            Type type = new TypeToken<HashMap<Integer, JsonObject>>(){}.getType();
+            HashMap<Integer, JsonObject> userJsonMap = JsonUserConfig.gson.fromJson(fileReader, type);
+            if(userJsonMap == null) return;
+            // Преобразование JSON объектов в пользователей и установка уровня "прав"
+            for (Integer uniqueId : userJsonMap.keySet()) {
+                JsonObject userJson = userJsonMap.get(uniqueId);
+                int userTypeIndex = userJson.get("userType").getAsInt();
+                UserType userType = UserType.getUserTypeById(userTypeIndex);
+                int activities = userJson.get("activities").getAsInt(); // Получаем activities из JSON
+                // Создание пользователя и добавление в HashMap
+                users.put(uniqueId, new User(uniqueId, userType));
+                users.get(uniqueId).setActivities(activities);
+            }
+
+            System.out.println(users);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Добавляет определённых пользователей в массив {@link #developers}
      */
-    private void initDevelopers () {
+    public static void initDevelopers () {
         developers.add(281130380);
         developers.add(454783070);
+    }
+
+
+    /**
+     * Данный метод обновляет информацию о игроке, либо заного добавляет после перезапуска бота
+     * @throws IOException выкидывает исключение, если не может найти/обновить json конфиг
+     */
+    public static void update() {
+        try (FileWriter fileWriter = new FileWriter(JsonUserConfig.userDatabaseFilepath)) {
+            // Конвертация пользователей в JSON объекты для сохранения
+            Type type = new TypeToken<HashMap<Integer, JsonObject>>(){}.getType();
+            HashMap<Integer, JsonObject> userJsonMap = new HashMap<>();
+            for (Integer uniqueId : users.keySet()) {
+                User user = users.get(uniqueId);
+                JsonObject userJson = new JsonObject();
+                userJson.addProperty("uniqueId", user.getUniqueId());
+                userJson.addProperty("userType", user.getUserType().permissionsId);
+                userJson.addProperty("activities", user.getActivities()); // Добавляем activities в JSON
+
+                userJsonMap.put(uniqueId, userJson);
+            }
+
+            String json = JsonUserConfig.gson.toJson(userJsonMap, type);
+            fileWriter.write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -38,6 +97,8 @@ public class Database {
             users.put(uniqueId, new User(uniqueId, UserType.DEVELOPER));
         else
             users.put(uniqueId, new User(uniqueId, UserType.GUEST));
+
+        update();
     }
 
     /**

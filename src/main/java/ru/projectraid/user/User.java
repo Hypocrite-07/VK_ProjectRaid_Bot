@@ -6,21 +6,18 @@ import ru.projectraid.activitysShop.ActivityTable;
 import ru.projectraid.messages.commands.ACommand;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import static ru.projectraid.database.Database.update;
 
 public class User {
     private final int uniqueId;
     private ArrayList<Integer> replyPost;
+    private int activities;
 
     public UserType getUserType() {
         return userType;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
-
-    private int activities;
     private UserType userType;
 
     /**
@@ -28,6 +25,7 @@ public class User {
      * @param uniqueId уникальный идентификатор пользователя в ВК
      * @param userType правовой доступ пользователя
      */
+
     public User(int uniqueId, UserType userType) {
         this.uniqueId = uniqueId;
         this.userType = userType;
@@ -54,13 +52,18 @@ public class User {
     public int getActivities() {
         return activities;
     }
+
     public void addActivities(int activities, ActivityTable activityType, Update.Object _object) {
         this.activities += activities;
         if(activities > 0)
             Bot.getInstance.sendMsgToUser(this, "На ваш счёт зачислен " + activityType.activitiesCount + "\nТекущий счёт:" + getActivities() + "\n" + _object.toString());
         else
             Bot.getInstance.sendMsgToUser(this, "С вашего счёта вычеслено " + activityType.activitiesCount + "\nТекущий счёт:" + getActivities() + "\n" + _object.toString());
+        update();
+    }
 
+    public void setActivities(int setActivities) {
+        this.activities = setActivities;
     }
 
     public void addReply(int postId) {
@@ -70,6 +73,7 @@ public class User {
     public void removeReplay(int postId) {
         replyPost.remove((Object) postId);
     }
+
     public boolean isReplyPost(int postId) {
         return replyPost.contains(postId);
     }
