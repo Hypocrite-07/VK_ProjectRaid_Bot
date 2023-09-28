@@ -10,7 +10,6 @@ import ru.projectraid.user.UserType;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MessageHandler {
 
     private static final List<ACommand> commands = new ArrayList<>();

@@ -2,7 +2,7 @@ package ru.projectraid.user;
 
 import api.longpoll.bots.model.events.Update;
 import ru.projectraid.Bot;
-import ru.projectraid.activitysShop.ActivityTable;
+import ru.projectraid.activitys_shop.ActivityTable;
 import ru.projectraid.messages.commands.ACommand;
 
 import java.util.ArrayList;

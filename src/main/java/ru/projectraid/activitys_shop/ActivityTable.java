@@ -1,4 +1,4 @@
-package ru.projectraid.activitysShop;
+package ru.projectraid.activitys_shop;
 
 public enum ActivityTable {
 

@@ -44,7 +44,7 @@ public class Database {
 
             System.out.println(users);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(JsonUserConfig.userDatabaseFilepath + " не был найден. Будет создан новый!");
         }
     }
 

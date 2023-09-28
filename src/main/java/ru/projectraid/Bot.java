@@ -8,7 +8,7 @@ import api.longpoll.bots.model.events.wall.comments.WallReply;
 import api.longpoll.bots.model.events.wall.comments.WallReplyDelete;
 import api.longpoll.bots.model.objects.basic.Message;
 
-import ru.projectraid.activitysShop.ActivityTable;
+import ru.projectraid.activitys_shop.ActivityTable;
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IllegalAccess;
 import ru.projectraid.exceptions.IncorrectArgument;

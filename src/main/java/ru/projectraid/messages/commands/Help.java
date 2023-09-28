@@ -8,6 +8,7 @@ import ru.projectraid.user.User;
 import ru.projectraid.user.UserType;
 
 public class Help extends ACommand{
+
     @Override
     public String getCommandName () {
         return "Помощь";
