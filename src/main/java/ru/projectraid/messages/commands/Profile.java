@@ -20,7 +20,7 @@ public class Profile extends ACommand {
 
     @Override
     public int getPermissionsLevel() {
-        return 1;
+        return 0;
     }
 
     @Override

@@ -29,6 +29,8 @@ public abstract class ACommand {
         return 3;
     }
 
+    public boolean getSplitArgs() { return true; }
+
     /**
      * Данный метод используется для реализации действия команды
      * @param user игрок, который вызвал команду
@@ -38,4 +40,5 @@ public abstract class ACommand {
     public void action( User user, Message message, String... args) throws IncorrectArgumentException {
 
     }
+
 }

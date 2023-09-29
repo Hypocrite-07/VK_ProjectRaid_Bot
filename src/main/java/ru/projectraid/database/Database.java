@@ -102,6 +102,15 @@ public class Database {
         update();
     }
 
+    public static ArrayList<User> getUsersWithPermissions(int permissionsId) {
+        ArrayList<User> usersWithPermissions = new ArrayList<>();
+        for (User user: users.values()) {
+            if(user.getUserType().permissionsId >= permissionsId)
+                usersWithPermissions.add(user);
+        }
+        return usersWithPermissions;
+    }
+
     /**
      * Получает пользователя из ключевого массива {@link #users} по идентификационному ключу
      * @param uniqueId уникальный идентификатор пользователя в ВК

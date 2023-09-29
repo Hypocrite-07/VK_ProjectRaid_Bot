@@ -1,15 +1,27 @@
 package ru.projectraid.activitys_shop.products;
 
-public class BetaTestProduct extends  AProduct{
+import ru.projectraid.Bot;
+import ru.projectraid.user.User;
+import ru.projectraid.user.UserType;
+import ru.projectraid.utils.RandomStringGenerator;
+
+import java.util.UUID;
+
+public class BetaTestProduct extends  AProduct {
 
     @Override
     public String getNameProduct() {
-        return "Close Beta-Test";
+        return "ЗБТ";
     }
 
     @Override
     public String getProductDescription() {
-        return "It's a Beta-Test";
+        return "После покупки предоставляется ключ для участия в ЗБТ.";
+    }
+
+    @Override
+    public int getPermissionLevel() {
+        return UserType.AUTHORIZED.permissionsId;
     }
 
     @Override
@@ -22,5 +34,9 @@ public class BetaTestProduct extends  AProduct{
         return 1;
     }
 
+    @Override
+    public void action(User user) {
+        Bot.getInstance.sendMsgToUser(user, RandomStringGenerator.generateString());
+    }
 
 }

@@ -25,7 +25,7 @@ public class Help extends ACommand{
     }
 
     @Override
-    public void action ( User user, Message message, String... args) throws IncorrectArgumentException {
+    public void action ( User user, Message message,  String... args) throws IncorrectArgumentException {
         if(args.length > 1)
             throw new IncorrectArgumentException(getCommandName(), "был найден лишний аргумент!");
         StringBuilder commandslist = new StringBuilder("В данный момент вы можете использовать следующие команды: \n\n");

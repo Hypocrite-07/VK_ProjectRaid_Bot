@@ -41,6 +41,11 @@ public class MessageHandler {
             assert command != null;
             if(user.canUseCommand(command))
             {
+                if(command.getSplitArgs() == false)
+                {
+                    command.action(user, message, message.getText().replace(command.getCommandName().toLowerCase() + " ", ""));
+                    return true;
+                }
                 command.action(user, message, args);
                 return true;
             }

@@ -3,6 +3,7 @@ package ru.projectraid.user;
 import api.longpoll.bots.model.events.Update;
 import ru.projectraid.Bot;
 import ru.projectraid.activitys_shop.ActivityTable;
+import ru.projectraid.activitys_shop.products.AProduct;
 import ru.projectraid.messages.commands.ACommand;
 
 import java.util.ArrayList;
@@ -19,6 +20,11 @@ public class User {
     }
 
     private UserType userType;
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+        update();
+    }
 
     /**
      * Конструктор пользователя
@@ -49,6 +55,10 @@ public class User {
         return this.userType.permissionsId >= command.getPermissionsLevel();
     }
 
+    public boolean canBuyProduct(AProduct product) {
+        return this.userType.permissionsId >= product.getPermissionLevel() && this.activities >= product.getPrice() && product.getCount() > 0;
+    }
+
     public int getActivities() {
         return activities;
     }
@@ -64,6 +74,7 @@ public class User {
 
     public void setActivities(int setActivities) {
         this.activities = setActivities;
+        update();
     }
 
     public void addReply(int postId) {

@@ -2,7 +2,7 @@ package ru.projectraid.user;
 
 public enum UserType {
 
-        GUEST(1, "Гость"),
+        GUEST(0, "Гость"),
         AUTHORIZED(1, "Игрок"),
         ADMIN(2, "Администратор"),
         DEVELOPER(3, "Разработчик");
