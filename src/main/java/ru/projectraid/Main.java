@@ -5,6 +5,7 @@ import ru.projectraid.database.Database;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.messages.commands.Help;
 import ru.projectraid.messages.commands.Profile;
+import ru.projectraid.messages.commands.SetActivities;
 import ru.projectraid.messages.commands.Test;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Main {
         MessageHandler.addCommand(new Profile());
         MessageHandler.addCommand(new Help());
         MessageHandler.addCommand(new Test());
+        MessageHandler.addCommand(new SetActivities());
     }
     
 }

@@ -1,8 +1,8 @@
 package ru.projectraid.messages;
 
 import api.longpoll.bots.model.objects.basic.Message;
-import ru.projectraid.exceptions.IllegalAccess;
-import ru.projectraid.exceptions.IncorrectArgument;
+import ru.projectraid.exceptions.IllegalAccessException;
+import ru.projectraid.exceptions.IncorrectArgumentException;
 import ru.projectraid.messages.commands.ACommand;
 import ru.projectraid.user.User;
 import ru.projectraid.user.UserType;
@@ -30,10 +30,10 @@ public class MessageHandler {
      * @param user пользователь вызвавший команду
      * @param message сообщение, которое отправил пользователь
      * @return успешное использование команды
-     * @throws IllegalAccess выкидывает исключение при условии того, что у {@link User} {@code StatusID} в {@link UserType} меньше, чем необходимо для использования команды
-     * @throws IncorrectArgument выкидывает исключение при условии того, что у вызванной команды была некорректно пройдена проверка на аргументы
+     * @throws IllegalAccessException выкидывает исключение при условии того, что у {@link User} {@code StatusID} в {@link UserType} меньше, чем необходимо для использования команды
+     * @throws IncorrectArgumentException выкидывает исключение при условии того, что у вызванной команды была некорректно пройдена проверка на аргументы
      */
-    public static boolean useCommand( User user, Message message) throws IllegalAccess, IncorrectArgument {
+    public static boolean useCommand( User user, Message message) throws IllegalAccessException, IncorrectArgumentException {
         String[] args = message.getText().split(" ");
         if(existCommand(args[0]))
         {
@@ -45,7 +45,7 @@ public class MessageHandler {
                 return true;
             }
             else
-                throw new IllegalAccess(UserType.getUserTypeById(command.getPermissionsLevel()));
+                throw new IllegalAccessException(UserType.getUserTypeById(command.getPermissionsLevel()));
         }
 
         return false;

@@ -10,8 +10,9 @@ import api.longpoll.bots.model.objects.basic.Message;
 
 import ru.projectraid.activitys_shop.ActivityTable;
 import ru.projectraid.database.Database;
-import ru.projectraid.exceptions.IllegalAccess;
-import ru.projectraid.exceptions.IncorrectArgument;
+import ru.projectraid.exceptions.IllegalAccessException;
+import ru.projectraid.exceptions.IncorrectArgumentException;
+import ru.projectraid.exceptions.UserMismatchException;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.user.User;
 
@@ -57,35 +58,53 @@ public class Bot extends LongPollBot {
     public void onMessageNew(MessageNew messageNew) {
         Message message = messageNew.getMessage();
         if (message.hasText()) {
-            User user = Database.getUser(message.getFromId());
-
+            User user = null;
             try {
+                user = Database.getUser(message.getFromId(), false);
                 if(MessageHandler.useCommand(user, message)) {}
                 else sendMsgToUser(user, "Данной команды нет в списке!");
-            } catch (IllegalAccess | IncorrectArgument e)
+            } catch (IllegalAccessException | IncorrectArgumentException e)
             {
                 sendMsgToUser(user, e.getMessage());
-            }
+            } catch (UserMismatchException ignored) {}
         }
     }
 
     @Override
     public void onLikeAdd(Like like) {
         logger.log(Level.INFO, like.toString());
-        User user = Database.getUser(like.getLikerId());
+        User user = null;
+        try {
+            user = Database.getUser(like.getLikerId(), true);
+        } catch (UserMismatchException e) {
+            logger.log(Level.WARNING, "Пользователь с идентификатором " + like.getLikerId() + " не был инициализирован в боте.");
+            return;
+        }
         if(like.getObjectOwnerId() == groupId) user.addActivities(ActivityTable.LIKE_EVENT.activitiesCount, ActivityTable.LIKE_EVENT, like);
     }
 
     @Override
     public void onLikeRemove(Like like) {
-        User user = Database.getUser(like.getLikerId());
+        User user = null;
+        try {
+            user = Database.getUser(like.getLikerId(), true);
+        } catch (UserMismatchException e) {
+            logger.log(Level.WARNING, "Пользователь с идентификатором " + like.getLikerId() + " не был инициализирован в боте.");
+            return;
+        }
         if(like.getObjectOwnerId() == groupId) user.addActivities(-ActivityTable.LIKE_EVENT.activitiesCount, ActivityTable.LIKE_EVENT, like);
     }
 
     @Override
     public void onWallReplyNew(WallReply wallReply) {
         logger.log(Level.INFO, wallReply.toString());
-        User user = Database.getUser(wallReply.getFromId());
+        User user = null;
+        try {
+            user = Database.getUser(wallReply.getFromId(), true);
+        } catch (UserMismatchException e) {
+            logger.log(Level.WARNING, "Пользователь с идентификатором " + wallReply.getFromId() + " не был инициализирован в боте.");
+            return;
+        }
         int postId = wallReply.getPostId();
         if(!user.isReplyPost(postId)) {
             user.addReply(postId);
@@ -95,7 +114,13 @@ public class Bot extends LongPollBot {
 
     @Override
     public void onWallReplyDelete(WallReplyDelete wallReplyDelete) {
-        User user = Database.getUser(wallReplyDelete.getDeleterId());
+        User user = null;
+        try {
+            user = Database.getUser(wallReplyDelete.getDeleterId(), true);
+        } catch (UserMismatchException e) {
+            logger.log(Level.WARNING, "Пользователь с идентификатором " + wallReplyDelete.getDeleterId() + " не был инициализирован в боте.");
+            return;
+        }
         user.removeReplay(wallReplyDelete.getPostId());
         user.addActivities(-ActivityTable.COMMENT_EVENT.activitiesCount, ActivityTable.COMMENT_EVENT, wallReplyDelete);
     }

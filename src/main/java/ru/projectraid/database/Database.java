@@ -3,6 +3,7 @@ package ru.projectraid.database;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import ru.projectraid.database.json.JsonUserConfig;
+import ru.projectraid.exceptions.UserMismatchException;
 import ru.projectraid.user.User;
 import ru.projectraid.user.UserType;
 
@@ -106,12 +107,15 @@ public class Database {
      * @param uniqueId уникальный идентификатор пользователя в ВК
      * @return возвращает пользователя из ключевого массива {@link #users}
      */
-    public static User getUser(int uniqueId) {
+    public static User getUser(int uniqueId, boolean mustExist) throws UserMismatchException {
         User user = users.get(uniqueId);
         if(users.get(uniqueId) == null)
         {
+            if(mustExist){
+                throw new UserMismatchException(uniqueId);
+            }
             addUser(uniqueId);
-            return getUser(uniqueId);
+            return getUser(uniqueId, mustExist);
         }
         return user;
     }
