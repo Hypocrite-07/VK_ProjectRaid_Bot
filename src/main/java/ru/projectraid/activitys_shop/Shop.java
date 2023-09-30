@@ -13,6 +13,8 @@ public class Shop {
 
     public Shop(){
         mainShop = this;
+
+        this.initShopProduct();
     }
 
     public static void addProduct(AProduct product) {
@@ -36,6 +38,8 @@ public class Shop {
         }
         return null;
     }
-
+    private void initShopProduct() {
+        Shop.addProduct(new BetaTestProduct());
+    }
 
 }

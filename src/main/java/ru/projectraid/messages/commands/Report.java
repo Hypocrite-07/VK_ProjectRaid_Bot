@@ -38,7 +38,6 @@ public class Report extends ACommand{
         for (User userTo: Database.getUsersWithPermissions(2)) {
             Bot.getInstance.sendMsgToUser(userTo, "Пользователь " + user.getUniqueId() + " оставил репорт.\nСодержание:\n\n" + response);
         }
-
         Bot.getInstance.sendMsgToUser(user, "Репорт был доставлен.\nОжидайте ответа!");
     }
 }

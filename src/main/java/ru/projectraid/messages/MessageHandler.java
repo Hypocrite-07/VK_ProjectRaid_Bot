@@ -8,6 +8,7 @@ import ru.projectraid.user.User;
 import ru.projectraid.user.UserType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MessageHandler {
@@ -87,6 +88,9 @@ public class MessageHandler {
      * @return возвращает список команд из {@link #commands}
      */
     public static List<ACommand> getCommandsList() {
-        return commands;
+        return Collections.unmodifiableList(commands);
     }
+   /* public static List<ACommand> getCommandsList() {
+        return commands;
+    } */
 }
