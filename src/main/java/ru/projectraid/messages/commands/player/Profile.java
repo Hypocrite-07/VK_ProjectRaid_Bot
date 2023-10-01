@@ -1,7 +1,8 @@
-package ru.projectraid.messages.commands;
+package ru.projectraid.messages.commands.player;
 
 import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.Bot;
+import ru.projectraid.messages.commands.ACommand;
 import ru.projectraid.user.User;
 
 import java.lang.reflect.Member;
@@ -11,6 +12,11 @@ public class Profile extends ACommand {
     @Override
     public String getCommandName() {
         return "Профиль";
+    }
+
+    @Override
+    public boolean isVisibleOnStartPage() {
+        return true;
     }
 
     @Override

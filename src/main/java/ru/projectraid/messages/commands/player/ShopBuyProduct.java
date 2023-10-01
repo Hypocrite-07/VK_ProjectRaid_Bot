@@ -1,16 +1,26 @@
-package ru.projectraid.messages.commands;
+package ru.projectraid.messages.commands.player;
 
+import api.longpoll.bots.model.objects.additional.Keyboard;
+import api.longpoll.bots.model.objects.additional.buttons.Button;
+import api.longpoll.bots.model.objects.additional.buttons.TextButton;
 import api.longpoll.bots.model.objects.basic.Message;
+import com.google.gson.JsonObject;
 import ru.projectraid.Bot;
 import ru.projectraid.activitys_shop.Shop;
 import ru.projectraid.activitys_shop.products.AProduct;
+import ru.projectraid.messages.commands.ACommand;
 import ru.projectraid.user.User;
+
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ShopBuyProduct extends ACommand {
 
     @Override
     public String getCommandName() {
-        return "купить";
+        return "Купить";
     }
 
     @Override

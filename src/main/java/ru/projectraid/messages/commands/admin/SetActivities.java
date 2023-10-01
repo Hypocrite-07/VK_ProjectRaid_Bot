@@ -1,28 +1,28 @@
-package ru.projectraid.messages.commands;
+package ru.projectraid.messages.commands.admin;
 
 import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.Bot;
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IncorrectArgumentException;
 import ru.projectraid.exceptions.UserMismatchException;
+import ru.projectraid.messages.commands.ACommand;
 import ru.projectraid.user.User;
-import ru.projectraid.user.UserType;
 
-public class SetPermissions extends ACommand {
+public class SetActivities extends ACommand {
 
     @Override
     public String getCommandName() {
-        return "Права";
+        return "Установить";
     }
 
     @Override
     public String getCommandDescription() {
-        return "Повысить игрока до должности";
+        return "Устанавливает значение активностей игроку";
     }
 
     @Override
     public int getPermissionsLevel() {
-        return 3;
+        return 2;
     }
 
     @Override
@@ -31,10 +31,9 @@ public class SetPermissions extends ACommand {
             throw new IncorrectArgumentException(this.getCommandName(), "Установить ID Значение");
         else {
             try {
-                if(user.getUserType().permissionsId >= Integer.parseInt(args[2])) {
-                    User userTo = Database.getUser(Integer.parseInt(args[1]), true);
-                    userTo.setUserType(UserType.getUserTypeById(Integer.parseInt(args[2])));
-                }
+                User userTo = Database.getUser(Integer.parseInt(args[1]), true);
+                userTo.setActivities(Integer.parseInt(args[2]));
+
             } catch (UserMismatchException e) {
                 Bot.getInstance.sendMsgToUser(user, e.getMessage());
             } catch (NumberFormatException e) {

@@ -1,8 +1,15 @@
 package ru.projectraid.messages.commands;
 
+import api.longpoll.bots.model.objects.additional.Keyboard;
+import api.longpoll.bots.model.objects.additional.buttons.Button;
+import api.longpoll.bots.model.objects.additional.buttons.TextButton;
 import api.longpoll.bots.model.objects.basic.Message;
+import com.google.gson.JsonObject;
 import ru.projectraid.exceptions.IncorrectArgumentException;
 import ru.projectraid.user.User;
+
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class ACommand {
 
@@ -14,6 +21,9 @@ public abstract class ACommand {
         return null;
     }
 
+    public boolean isVisibleOnStartPage() {
+        return false;
+    }
     /**
      * @return Описание данной команды
      */
@@ -30,6 +40,14 @@ public abstract class ACommand {
     }
 
     public boolean getSplitArgs() { return true; }
+
+    public Keyboard getKeyboard(List<Button> buttons, boolean inline) {
+        return null;
+    }
+
+    public Keyboard getKeyboard() {
+        return null;
+    }
 
     /**
      * Данный метод используется для реализации действия команды

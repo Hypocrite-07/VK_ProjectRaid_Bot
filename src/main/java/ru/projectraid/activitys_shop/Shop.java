@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 public class Shop {
 
-    public static Shop mainShop;
+    public static Shop getInstance;
     private static ArrayList<AProduct> productList = new ArrayList<>();
 
     public Shop(){
-        mainShop = this;
+        getInstance = this;
 
         this.initShopProduct();
     }
@@ -37,6 +37,10 @@ public class Shop {
             }
         }
         return null;
+    }
+
+    public static ArrayList<AProduct> getProductList() {
+        return productList;
     }
     private void initShopProduct() {
         Shop.addProduct(new BetaTestProduct());

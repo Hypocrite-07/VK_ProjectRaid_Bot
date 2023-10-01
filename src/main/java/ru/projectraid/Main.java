@@ -2,10 +2,13 @@ package ru.projectraid;
 
 import api.longpoll.bots.exceptions.VkApiException;
 import ru.projectraid.activitys_shop.Shop;
-import ru.projectraid.activitys_shop.products.BetaTestProduct;
 import ru.projectraid.database.Database;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.messages.commands.*;
+import ru.projectraid.messages.commands.admin.Send;
+import ru.projectraid.messages.commands.admin.SetActivities;
+import ru.projectraid.messages.commands.admin.SetPermissions;
+import ru.projectraid.messages.commands.player.*;
 
 import java.io.IOException;
 
@@ -32,6 +35,8 @@ public class Main {
         MessageHandler.addCommand(new SetPermissions());
         MessageHandler.addCommand(new Report());
         MessageHandler.addCommand(new Send());
+        MessageHandler.addCommand(new Market());
+        MessageHandler.addCommand(new Start());
     }
 
     

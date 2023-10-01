@@ -106,7 +106,7 @@ public class Database {
         ArrayList<User> usersWithPermissions = new ArrayList<>();
         for (User user: users.values()) {
             if(user.getUserType().permissionsId >= permissionsId)
-                usersWithPermissions.add(user);
+            usersWithPermissions.add(user);
         }
         return usersWithPermissions;
     }

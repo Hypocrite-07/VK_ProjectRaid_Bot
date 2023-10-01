@@ -1,14 +1,15 @@
-package ru.projectraid.messages.commands;
+package ru.projectraid.messages.commands.player;
 
 import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.Bot;
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IncorrectArgumentException;
 import ru.projectraid.messages.MessageHandler;
+import ru.projectraid.messages.commands.ACommand;
 import ru.projectraid.user.User;
 import ru.projectraid.user.UserType;
 
-public class Report extends ACommand{
+public class Report extends ACommand {
 
     @Override
     public String getCommandName () {

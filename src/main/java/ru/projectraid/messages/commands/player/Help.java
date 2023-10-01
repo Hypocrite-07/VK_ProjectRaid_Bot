@@ -1,17 +1,23 @@
-package ru.projectraid.messages.commands;
+package ru.projectraid.messages.commands.player;
 
 import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.Bot;
 import ru.projectraid.exceptions.IncorrectArgumentException;
 import ru.projectraid.messages.MessageHandler;
+import ru.projectraid.messages.commands.ACommand;
 import ru.projectraid.user.User;
 import ru.projectraid.user.UserType;
 
-public class Help extends ACommand{
+public class Help extends ACommand {
 
     @Override
     public String getCommandName () {
         return "Помощь";
+    }
+
+    @Override
+    public boolean isVisibleOnStartPage() {
+        return true;
     }
 
     @Override
@@ -32,6 +38,8 @@ public class Help extends ACommand{
         for (ACommand command: MessageHandler.getCommandsList()) {
             if(user.canUseCommand(command))
                 commandslist.append(command.getCommandName() + " - " + command.getCommandDescription() + ";\n Уровень доступа: " + UserType.getUserTypeById(command.getPermissionsLevel()).statusName + "\n\n");
+
+
         }
         String response = commandslist.toString();
 

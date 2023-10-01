@@ -2,12 +2,17 @@ package ru.projectraid;
 
 import api.longpoll.bots.LongPollBot;
 import api.longpoll.bots.exceptions.VkApiException;
+import api.longpoll.bots.methods.impl.messages.Send;
 import api.longpoll.bots.model.events.likes.Like;
 import api.longpoll.bots.model.events.messages.MessageNew;
 import api.longpoll.bots.model.events.wall.comments.WallReply;
 import api.longpoll.bots.model.events.wall.comments.WallReplyDelete;
+import api.longpoll.bots.model.objects.additional.Keyboard;
+import api.longpoll.bots.model.objects.additional.buttons.Button;
+import api.longpoll.bots.model.objects.additional.buttons.TextButton;
 import api.longpoll.bots.model.objects.basic.Message;
 
+import com.google.gson.JsonObject;
 import ru.projectraid.activitys_shop.ActivityTable;
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IllegalAccessException;
@@ -16,6 +21,9 @@ import ru.projectraid.exceptions.UserMismatchException;
 import ru.projectraid.messages.MessageHandler;
 import ru.projectraid.user.User;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,6 +55,19 @@ public class Bot extends LongPollBot {
             throw new RuntimeException(e);
         }
     }
+
+    public void sendButtons(User user, String text, Keyboard board) {
+        try {
+            vk.messages.send()
+                    .setPeerId(user.getUniqueId())
+                    .setMessage(text)
+                    .setKeyboard(board)
+                    .execute();
+        } catch (VkApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     /**
      * Ивент, который срабатывает при получении сообщения от пользователя.

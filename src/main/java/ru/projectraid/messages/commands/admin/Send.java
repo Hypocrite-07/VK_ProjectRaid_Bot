@@ -1,27 +1,29 @@
-package ru.projectraid.messages.commands;
+package ru.projectraid.messages.commands.admin;
 
 import api.longpoll.bots.model.objects.basic.Message;
 import ru.projectraid.Bot;
 import ru.projectraid.database.Database;
 import ru.projectraid.exceptions.IncorrectArgumentException;
 import ru.projectraid.exceptions.UserMismatchException;
+import ru.projectraid.messages.commands.ACommand;
 import ru.projectraid.user.User;
+import ru.projectraid.user.UserType;
 
-public class SetActivities extends ACommand {
+public class Send extends ACommand {
 
     @Override
     public String getCommandName() {
-        return "Установить";
+        return "Ответить";
     }
 
     @Override
     public String getCommandDescription() {
-        return "Устанавливает значение активностей игроку";
+        return "Отправить сообщение / ответить на репорт";
     }
 
     @Override
     public int getPermissionsLevel() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -30,13 +32,13 @@ public class SetActivities extends ACommand {
             throw new IncorrectArgumentException(this.getCommandName(), "Установить ID Значение");
         else {
             try {
-                User userTo = Database.getUser(Integer.parseInt(args[1]), true);
-                userTo.setActivities(Integer.parseInt(args[2]));
+                    User userTo = Database.getUser(Integer.parseInt(args[1]), true);
+                    String sendMessages = message.getText().replace(args[0], "").replace(String.valueOf(Integer.parseInt(args[1])), "");
+                    Bot.getInstance.sendMsgToUser(userTo, "Вам было доставлено сообщение: \n" + sendMessages + "\n Хорошего дня!");
 
+                    Bot.getInstance.sendMsgToUser(user, "Сообщение было доставлено игроку с ID:" + userTo.getUniqueId() + "\n" + sendMessages);
             } catch (UserMismatchException e) {
                 Bot.getInstance.sendMsgToUser(user, e.getMessage());
-            } catch (NumberFormatException e) {
-                throw new IncorrectArgumentException(this.getCommandName(), "Установить ID Значение");
             }
         }
     }
