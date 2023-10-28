@@ -31,6 +31,7 @@ public class Profile extends ACommand {
 
     @Override
     public void action( User user, Message message, String... args) {
+
         Bot.getInstance.sendMsgToUser(user, user.toString());
     }
 }

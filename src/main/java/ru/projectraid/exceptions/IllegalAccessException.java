@@ -9,7 +9,7 @@ public class IllegalAccessException extends Throwable {
      * @param type правовой статус игрока
      */
     public IllegalAccessException(UserType type ) {
-        super("Для доступа к команде необходимо иметь уровень: " + type.statusName);
+        super("Для доступа к команде необходимо иметь уровень: ".concat(type.statusName));
     }
 
     @Override

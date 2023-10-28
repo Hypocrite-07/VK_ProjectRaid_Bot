@@ -7,7 +7,7 @@ public class UserMismatchException extends Throwable {
      * @param userId идентификатор, по которому не был найден пользователь
      */
     public UserMismatchException(int userId) {
-        super("Пользовател с указанным идентификатором не найден: " + userId );
+        super("Пользовател с указанным идентификатором не найден: ".concat(String.valueOf(userId)) );
     }
 
     @Override

@@ -21,9 +21,13 @@ public abstract class ACommand {
         return null;
     }
 
+
+
     public boolean isVisibleOnStartPage() {
         return false;
     }
+
+
     /**
      * @return Описание данной команды
      */

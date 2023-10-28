@@ -45,7 +45,7 @@ public class Database {
 
             System.out.println(users);
         } catch (IOException e) {
-            System.out.println(JsonUserConfig.userDatabaseFilepath + " не был найден. Будет создан новый!");
+            System.out.println(JsonUserConfig.userDatabaseFilepath.concat( " не был найден. Будет создан новый!"));
         }
     }
 
